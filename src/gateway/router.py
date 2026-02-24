@@ -1,5 +1,5 @@
 import httpx
-from fastapi import Request, HTTPException
+from fastapi import Request, HTTPException, Response
 
 SERVICES= {
      "users": "http://localhost:8001",
@@ -7,7 +7,13 @@ SERVICES= {
      "payments": "http://localhost:8003"
 }
 
-client= httpx.AsyncClient() 
+client = httpx.AsyncClient(
+    limits=httpx.Limits(
+        max_connections=500,
+        max_keepalive_connections=200
+    ),
+    timeout=5.0
+)
 
 async def forward_request(service: str, path: str, request: Request):
     if service not in SERVICES:
@@ -22,4 +28,4 @@ async def forward_request(service: str, path: str, request: Request):
         content=await request.body()
     )
 
-    return response.json()
+    return Response(content=response.content, status_code=response.status_code, headers=dict(response.headers))
