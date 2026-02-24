@@ -77,6 +77,4 @@ api-gateway-auth/
 └── .env                    # Variáveis de Ambiente
 ```
 
-## 📄 Licença
-
-Este projeto está licenciado sob a Licença MIT.
+## Desenvolvido com ❤️ e ☕ por Wellyson Balbino Feitosa
